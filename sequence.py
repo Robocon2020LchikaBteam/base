@@ -8,6 +8,7 @@
 import cv2
 import numpy as np
 
+import time
 import os
 
 import robocon	# add
@@ -15,11 +16,15 @@ import robocon	# add
 
 RED_HSV_RANGE_MIN_1 = [0, 130, 30]
 RED_HSV_RANGE_MAX_1 = [2, 255, 255]
-RED_HSV_RANGE_MIN_2 = [160, 130, 30]
+RED_HSV_RANGE_MIN_2 = [100, 90, 30]
 RED_HSV_RANGE_MAX_2 = [179, 255, 255]
 BLUE_HSV_RANGE_MIN = [55, 70, 10]
-BLUE_HSV_RANGE_MAX = [120, 255, 255]
+BLUE_HSV_RANGE_MAX = [100, 255, 255]
 
+DETECT_AREA_XMIN = 850
+DETECT_AREA_XMAX = 1000
+DETECT_AREA_YMIN = 200
+DETECT_AREA_YMAX = 600
 
 # gstreamer_pipeline returns a GStreamer pipeline for capturing from the CSI camera
 # Defaults to 1280x720 @ 60fps
@@ -97,20 +102,27 @@ WINDOW_NAME = 'Camera Test'
 def Watch_camera():
     cam = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER) #add
     ball_color = 'null'
+    ii = 0
 
     while True:
         ret, img = cam.read()
         if ret != True:
             break
 
-        cv2.imshow(WINDOW_NAME, img)
+        if(ii>100):    #時間で色味変わるので入れた
+            ball_imgBox = img[DETECT_AREA_YMIN: DETECT_AREA_YMAX, DETECT_AREA_XMIN:DETECT_AREA_XMAX]
+            ball_color = detectColor(ball_imgBox)
 
-        ball_imgBox = img[0: 200, 540:740]
-        ball_color = detectColor(ball_imgBox)
+            cv2.rectangle(img, (DETECT_AREA_XMIN,DETECT_AREA_YMIN), (DETECT_AREA_XMAX,DETECT_AREA_YMAX), (0, 0, 255), 1) # square drowing
+            cv2.putText(img, ball_color, (640,250), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255,255,255),thickness = 1)	#text drowing
+
+        cv2.imshow(WINDOW_NAME, img)
 
         key = cv2.waitKey(10)
         if key == 27 or ball_color != 'null': # ESC
             break
+        
+        ii += 1
 
     cam.release()
     cv2.destroyAllWindows()
