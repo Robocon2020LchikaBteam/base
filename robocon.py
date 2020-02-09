@@ -20,10 +20,12 @@ def selectPhase(phase_number,color):
 		pwm.set_pwm(1, 0, calcDuty(0))    # ch,on,duty
 		pwm.set_pwm(0, 0, calcDuty(0))
 		print("ini")
+		pwm.set_pwm(0, 0, calcDuty(7))	# sometimes err??
 		time.sleep(1)
 	elif phase_number == 1:
 		# stop phase 1
-		pwm.set_pwm(0, 0, calcDuty(15))
+		pwm.set_pwm(1, 0, calcDuty(0))    # ch,on,duty
+		pwm.set_pwm(0, 0, calcDuty(7))
 		print("stop")
 		time.sleep(1)
 	elif phase_number == 2:
@@ -40,17 +42,23 @@ def selectPhase(phase_number,color):
 			pwm.set_pwm(0, 0, calcDuty(0))
 			time.sleep(2)
 			print("blue")
-			pwm.set_pwm(0, 0, calcDuty(90))
+			pwm.set_pwm(0, 0, calcDuty(20))
+			pwm.set_pwm(1, 0, calcDuty(7))
+			pwm.set_pwm(0, 0, calcDuty(80))
 			time.sleep(2)
-			pwm.set_pwm(0, 0, calcDuty(0))
+			pwm.set_pwm(1, 0, calcDuty(0))
 		elif int(num) == 1 or color == 'red':
 			pwm.set_pwm(1, 0, calcDuty(0))    # ch,on,duty
 			pwm.set_pwm(0, 0, calcDuty(0))
 			time.sleep(2)
 			print("red")
-			pwm.set_pwm(1, 0, calcDuty(90))
+			pwm.set_pwm(1, 0, calcDuty(20))
+			pwm.set_pwm(0, 0, calcDuty(7))
+			pwm.set_pwm(1, 0, calcDuty(80))
 			time.sleep(2)
 			pwm.set_pwm(1, 0, calcDuty(0))
+		pwm.set_pwm(0, 0, calcDuty(7))
+		pwm.set_pwm(1, 0, calcDuty(0))
 
 		time.sleep(1)
 

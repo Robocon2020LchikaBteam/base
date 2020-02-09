@@ -18,7 +18,7 @@ RED_HSV_RANGE_MAX_1 = [2, 255, 255]
 RED_HSV_RANGE_MIN_2 = [160, 130, 30]
 RED_HSV_RANGE_MAX_2 = [179, 255, 255]
 BLUE_HSV_RANGE_MIN = [55, 70, 10]
-BLUE_HSV_RANGE_MAX = [120, 150, 80]
+BLUE_HSV_RANGE_MAX = [120, 255, 255]
 
 
 # gstreamer_pipeline returns a GStreamer pipeline for capturing from the CSI camera
@@ -68,15 +68,15 @@ def detectColor(imgBox):
     for i in range(3):
         if(value_hsv[i] > RED_HSV_RANGE_MIN_1[i] and value_hsv[i] < RED_HSV_RANGE_MAX_1[i]):
             color_red += 1
-        if(value_hsv[i] > RED_HSV_RANGE_MIN_2[i] and value_hsv[i] < RED_HSV_RANGE_MAX_2[i]):
+        elif(value_hsv[i] > RED_HSV_RANGE_MIN_2[i] and value_hsv[i] < RED_HSV_RANGE_MAX_2[i]):
             color_red += 1 
-        elif(value_hsv[i] > BLUE_HSV_RANGE_MIN[i] and value_hsv[i] < BLUE_HSV_RANGE_MAX[i]):
+        if(value_hsv[i] > BLUE_HSV_RANGE_MIN[i] and value_hsv[i] < BLUE_HSV_RANGE_MAX[i]):
             color_blue += 1
 
     print('h:{:.2f} s:{:.2f} v:{:.2f}'.format(h,s,v))
 
     color = 'null'
-    if color_red > 3:
+    if color_red >= 3:
         color = 'red'
     elif color_blue == 3:
         color = 'blue'
@@ -119,11 +119,11 @@ def Watch_camera():
 
 
 def main():
-	while True:
-		robocon.selectPhase(0,0)	#ini
-		robocon.selectPhase(1,0)	#stop
-		b_color = Watch_camera()
-		robocon.selectPhase(2,b_color)
+    robocon.selectPhase(0,0)	#ini
+    while True:
+	    robocon.selectPhase(1,0)	#stop
+	    b_color = Watch_camera()
+	    robocon.selectPhase(2,b_color)
 
 
 if __name__ == "__main__":
