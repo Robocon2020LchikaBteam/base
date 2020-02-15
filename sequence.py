@@ -21,8 +21,8 @@ RED_HSV_RANGE_MAX_2 = [179, 255, 255]
 BLUE_HSV_RANGE_MIN = [55, 70, 10]
 BLUE_HSV_RANGE_MAX = [100, 255, 255]
 
-DETECT_AREA_XMIN = 850
-DETECT_AREA_XMAX = 1000
+DETECT_AREA_XMIN = 540	#width 1280
+DETECT_AREA_XMAX = 740
 DETECT_AREA_YMIN = 200
 DETECT_AREA_YMAX = 600
 
@@ -58,6 +58,7 @@ def gstreamer_pipeline(
             display_height,
         )
     )
+
 
 def detectColor(imgBox):
     # https://qiita.com/Zumwalt/items/4d9bc15608483fa77476
@@ -132,8 +133,8 @@ def Watch_camera():
 
 def main():
     robocon.selectPhase(0,0)	#ini
+    robocon.selectPhase(1,0)	#stop
     while True:
-	    robocon.selectPhase(1,0)	#stop
 	    b_color = Watch_camera()
 	    robocon.selectPhase(2,b_color)
 
