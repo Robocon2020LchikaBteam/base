@@ -21,6 +21,15 @@ def selectPhase(phase_number,color):
 		pwm.set_pwm(0, 0, calcDuty(0))
 		print("ini")
 		pwm.set_pwm(0, 0, calcDuty(7))	# sometimes err??
+		pwm.set_pwm(0, 0, calcDuty(80))	# sometimes err??
+		time.sleep(3)
+		pwm.set_pwm(0, 0, calcDuty(0))
+		time.sleep(1)
+		pwm.set_pwm(1, 0, calcDuty(40))#15
+		time.sleep(2)
+		pwm.set_pwm(1, 0, calcDuty(0))
+		time.sleep(1)
+		pwm.set_pwm(0, 0, calcDuty(7))	# sometimes err??
 		time.sleep(1)
 	elif phase_number == 1:
 		# stop phase 1
@@ -39,7 +48,7 @@ def selectPhase(phase_number,color):
 			time.sleep(1)
 			pwm.set_pwm(1, 0, calcDuty(20))#15
 			pwm.set_pwm(0, 0, calcDuty(80))
-			time.sleep(2)
+			time.sleep(3)
 
 			pwm.set_pwm(0, 0, calcDuty(7))
 			time.sleep(0.3)
@@ -53,7 +62,7 @@ def selectPhase(phase_number,color):
 			time.sleep(1)
 			pwm.set_pwm(0, 0, calcDuty(9))#8	#next ball stopper
 			pwm.set_pwm(1, 0, calcDuty(90))		#ball goal
-			time.sleep(2)
+			time.sleep(3)
 
 			pwm.set_pwm(1, 0, calcDuty(10))
 			time.sleep(0.3)

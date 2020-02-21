@@ -13,16 +13,19 @@ import os
 
 import robocon	# add
 
+GLOBAL_BALL_COLOR = 'null'
+
 
 RED_HSV_RANGE_MIN_1 = [0, 130, 30]
 RED_HSV_RANGE_MAX_1 = [2, 255, 255]
-RED_HSV_RANGE_MIN_2 = [100, 90, 30]
+RED_HSV_RANGE_MIN_2 = [80, 70, 10]
+#RED_HSV_RANGE_MIN_2 = [100, 60, 100]
 RED_HSV_RANGE_MAX_2 = [179, 255, 255]
 BLUE_HSV_RANGE_MIN = [55, 70, 10]
-BLUE_HSV_RANGE_MAX = [100, 255, 255]
+BLUE_HSV_RANGE_MAX = [80, 255, 255]
 
-DETECT_AREA_XMIN = 540	#width 1280
-DETECT_AREA_XMAX = 740
+DETECT_AREA_XMIN = 750
+DETECT_AREA_XMAX = 1000
 DETECT_AREA_YMIN = 200
 DETECT_AREA_YMAX = 600
 
@@ -101,6 +104,7 @@ def makeMask(img):
 WINDOW_NAME = 'Camera Test'
 
 def Watch_camera():
+    global GLOBAL_BALL_COLOR
     cam = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER) #add
     ball_color = 'null'
     ii = 0
@@ -114,10 +118,10 @@ def Watch_camera():
             ball_imgBox = img[DETECT_AREA_YMIN: DETECT_AREA_YMAX, DETECT_AREA_XMIN:DETECT_AREA_XMAX]
             ball_color = detectColor(ball_imgBox)
 
-            cv2.rectangle(img, (DETECT_AREA_XMIN,DETECT_AREA_YMIN), (DETECT_AREA_XMAX,DETECT_AREA_YMAX), (0, 0, 255), 1) # square drowing
-            cv2.putText(img, ball_color, (640,250), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255,255,255),thickness = 1)	#text drowing
+#            cv2.rectangle(img, (DETECT_AREA_XMIN,DETECT_AREA_YMIN), (DETECT_AREA_XMAX,DETECT_AREA_YMAX), (0, 0, 255), 1) # square drowing
+#            cv2.putText(img, ball_color, (640,250), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255,255,255),thickness = 1)	#text drowing
 
-        cv2.imshow(WINDOW_NAME, img)
+#        cv2.imshow(WINDOW_NAME, img)
 
         key = cv2.waitKey(10)
         if key == 27 or ball_color != 'null': # ESC
@@ -125,13 +129,23 @@ def Watch_camera():
         
         ii += 1
 
+        if(ii>500):	#refresh
+            if(GLOBAL_BALL_COLOR == 'blue'):
+                ball_color = 'red'
+                GLOBAL_BALL_COLOR = 'red'
+            else :
+                ball_color = 'blue'
+                GLOBAL_BALL_COLOR = 'blue'
+            break
+
     cam.release()
-    cv2.destroyAllWindows()
+#    cv2.destroyAllWindows()
 
     return ball_color
 
 
 def main():
+    jj = 0
     robocon.selectPhase(0,0)	#ini
     robocon.selectPhase(1,0)	#stop
     while True:
