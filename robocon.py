@@ -25,7 +25,7 @@ def selectPhase(phase_number,color):
 		time.sleep(3)
 		pwm.set_pwm(0, 0, calcDuty(0))
 		time.sleep(1)
-		pwm.set_pwm(1, 0, calcDuty(40))#15
+		pwm.set_pwm(1, 0, calcDuty(80))#15
 		time.sleep(2)
 		pwm.set_pwm(1, 0, calcDuty(0))
 		time.sleep(1)
